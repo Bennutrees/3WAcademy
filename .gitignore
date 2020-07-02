@@ -1,6 +1,6 @@
 ## Ignore all Lessons except code
-PHP\ Symfony/*
-!PHP\ Symfony/*/
+PHP_Symfony/*
+!PHP_Symfony/*/
 
-SQL\ MongoDB/*
-!SQL\ MongoDB/*/Code/*
+SQL_MongoDB/
+!SQL_MongoDB/**/Code/
