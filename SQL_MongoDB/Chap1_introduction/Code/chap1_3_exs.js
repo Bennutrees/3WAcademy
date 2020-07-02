@@ -99,13 +99,7 @@ cursorInventory( { $or : [ { price : { $in : [0.99, 1.99] }, sale : true }, { qt
 // 9.
 cursorInventory( { tags : { $exists : true } } ).forEach( doc => {
     const { society, tags } = doc;
-    let hasTags = !(tags === undefined || tags.length == 0);
-    if (hasTags) {
-        print (`The society ${society.toUpperCase()} has the tags :`)
-        tags.forEach( tag => {
-            print(`${tag} `);
-        });
-    }
+    print (`The society ${society.toUpperCase()} has the tags : ${tags.join(', ')}`)
 });
 
 
