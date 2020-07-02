@@ -81,7 +81,17 @@ cursorInventory( { $or : [ { status : "A" }, { type: "journal", qty : { $lt : 10
 
 
 // 8.
-cursorInventory( { $or : [ { price : { $in : [0.99, 1.99] }, sale : true }, { qty : { $lt : 45 } } ] } ).forEach( doc => {
+cursorInventory({
+    $or : [
+        {
+            price : { $in : [0.99, 1.99] },
+            sale : true
+        },
+        {
+            qty : { $lt : 45 }
+        }
+    ]
+}).forEach( doc => {
     const { society, sale, price, qty } = doc;
     let isSaleable = (sale == true);
     let isCheap = (price == 0.99 || price == 1.99);
