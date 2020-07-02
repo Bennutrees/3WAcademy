@@ -2,5 +2,5 @@
 PHP_Symfony/*
 !PHP_Symfony/*/
 
-SQL_MongoDB/
+SQL_MongoDB/*/*
 !SQL_MongoDB/**/Code/
