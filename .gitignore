@@ -1,0 +1,6 @@
+## Ignore all Lessons except code
+PHP Symfony/*
+!PHP Symfony/*/
+
+SQL MongoDB/*
+!SQL MongoDB/*/CodesExamples/

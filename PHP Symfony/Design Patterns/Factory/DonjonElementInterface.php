@@ -1,0 +1,7 @@
+n<?php
+
+interface DonjonElementInterface {
+    
+}
+
+?>
