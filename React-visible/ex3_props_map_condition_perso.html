@@ -17,21 +17,28 @@
 
             Vous êtes libre de vous organiser comme vous le souhaitez pour la construction de l'arbre React (composants)
 
-           1.  Affichez uniquement les étudiants ayant un status true, donnez pour chacun de ces étudiants le nombre de notes
+           1.  Affichez uniquement les étudiants ayant un status true, donnez pour chacun de ces étudiants le nombre de grades
 
            2. Affichez lorsqu'il existe la liste des leçons suivis par les étudiants 
         */
         const container = document.getElementById('root');
         const STUDENTS = [
-            { notes: [12, 11, 10, 12], name: "Alan", status : true, lessons : ['React', 'Symfony'] },
-            { notes: [18, 10, 19, 19, 10, 8], name: "Alice", status : true, lessons : ['React', 'Symfony', 'MongoDB'] },
-            { notes: [10, 9, 11, 8, 19, 20, 18, 19], name: "Bernard" , status : true, lessons : null},
-            { notes: [10, 9, 11, 18, 19], name: "Philippe" , status : false, lessons : null},
-            { notes: [10, 9, 11, 8, 19, 20, 18, 20, 20 ,17], name: "Tony" , status : false, lessons : null},
-            { notes: [11, 17, 19], name: "Sophie", status : true , lessons : ['Angular', 'Symfony'] },
-            { notes: [11.5, 17], name: "Aline", status : false, lessons : null },
-            { notes: [11, 17, 19, 19], name: "Sophie", status : true, lessons : null },
+            { grades: [12, 11, 10, 12], name: "Alan", status : true, lessons : ['React', 'Symfony'] },
+            { grades: [18, 10, 19, 19, 10, 8], name: "Alice", status : true, lessons : ['React', 'Symfony', 'MongoDB'] },
+            { grades: [10, 9, 11, 8, 19, 20, 18, 19], name: "Bernard" , status : true, lessons : null},
+            { grades: [10, 9, 11, 18, 19], name: "Philippe" , status : false, lessons : null},
+            { grades: [10, 9, 11, 8, 19, 20, 18, 20, 20 ,17], name: "Tony" , status : false, lessons : null},
+            { grades: [11, 17, 19], name: "Sophie", status : true , lessons : ['Angular', 'Symfony'] },
+            { grades: [11.5, 17], name: "Aline", status : false, lessons : null },
+            { grades: [11, 17, 19, 19], name: "Sophie", status : true, lessons : null },
         ];
+
+        function mean(student) {
+            let nbGrades = student.grades.length;
+            let sum = student.grades.reduce( (curr, acc) => curr + acc);
+            let mean = Math.floor(sum / nbGrades * 10) / 10;
+            return mean;
+        }
 
 
         class App extends React.Component {
@@ -44,15 +51,15 @@
 
         class Students extends React.Component {
             render() {
+                let filteredStudents = this.props.students.filter(student => student.status == true);
+                filteredStudents.sort((a, b) => mean(b) - mean(a));
+
                 return (
                     <ul className = "students">
                         {/* {this.props.students.map( (student, index) => 
                             <Student student = {student} key = {index}/>
                         )} */}
-                        {this.props.students.map( (student, index) => {
-                            if (student.status == true) {
-                                return <Student student = {student} key = {index}/>
-                            }})}
+                        {filteredStudents.map( (student, index) => <Student student = {student} key = {index}/>)}
                     </ul>
                 );
             }
@@ -62,8 +69,10 @@
             render() {
                 return (
                     <li className = "student">
-                        <p>{this.props.student.name}, nombre de notes : {this.props.student.notes.length}</p>
-                        {this.props.lessons != null && <Lessons lessons = {this.props.student.lessons}/>}
+                        <p>{this.props.student.name}<br/>
+                        Nombre de notes : {this.props.student.grades.length}<br/>
+                        Moyenne : {mean(this.props.student)}</p>
+                        {this.props.student.lessons != null && <Lessons lessons = {this.props.student.lessons}/>}
                     </li>
                 );
             }
