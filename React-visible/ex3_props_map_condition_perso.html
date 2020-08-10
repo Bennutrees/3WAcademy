@@ -69,9 +69,9 @@
             render() {
                 return (
                     <li className = "student">
-                        <p>{this.props.student.name}<br/>
-                        Nombre de notes : {this.props.student.grades.length}<br/>
-                        Moyenne : {mean(this.props.student)}</p>
+                        <p>{this.props.student.name}<br/>{`
+                        Nombre de notes : ${this.props.student.grades.length}<br/>
+                        Moyenne : ${mean(this.props.student)}`}</p>
                         {this.props.student.lessons != null && <Lessons lessons = {this.props.student.lessons}/>}
                     </li>
                 );
