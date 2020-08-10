@@ -63,7 +63,7 @@
                 return (
                     <li className = "student">
                         <p>{this.props.student.name}, nombre de notes : {this.props.student.notes.length}</p>
-                        <Lessons lessons = {this.props.student.lessons}/>
+                        {this.props.lessons != null && <Lessons lessons = {this.props.student.lessons}/>}
                     </li>
                 );
             }
@@ -73,8 +73,7 @@
             render() {
                 return (
                     <ul className = "lessons">
-                        {/*{this.props.lessons != null ? this.props.lessons.map( (lesson, index) => <Lesson lesson = {lesson} key = {index}/>) : null}*/}
-                        {this.props.lessons != null && this.props.lessons.map( (lesson, index) => <Lesson lesson = {lesson} key = {index}/>)}
+                        {this.props.lessons.map( (lesson, index) => <Lesson lesson = {lesson} key = {index}/>)}
                     </ul>
                 );
             }
