@@ -118,3 +118,60 @@ cursorInventory( { tags : { $in : ["blank"] } } ).forEach( doc => {
     const { society } = doc;
     print (`The society ${society.toUpperCase()} has the tag blank`)
 });
+
+
+
+
+// ForEach
+// 1.
+const updateFirstInInventory = (query, update, options = null) => {
+    if (options === null) {
+        return db.inventory.updateOne(query, update);
+    } else {
+        return db.inventory.updateOne(query, update, options);
+    }
+}
+
+cursorInventory( { status : { $in : ["C", "D"] } } ).forEach( doc => {
+    const { society, qty } = doc;
+    print(`The society ${society.toUpperCase()} had ${qty} products`);
+    updateFirstInInventory( { _id : doc._id }, { $mul : { "qty" : 1.5 } } );
+    print(`The society ${society.toUpperCase()} has now ${qty * 1.5} products`)
+});
+
+
+// 2.
+const updateManyInInventory = (query, update, options = null) => {
+    if (options === null) {
+        return db.inventory.updateMany(query, update);
+    } else {
+        return db.inventory.updateMany(query, update, options);
+    }
+}
+
+cursorInventory({ $and: [{ status: { $in: ["A", "B"] }, tags: "blank" }] }, { tags : 1, _id : 1 }).forEach(
+    doc => {
+        const { tags, _id  } = doc;
+        let count = 0 ;
+
+        if(tags)
+            doc.tags.forEach( tag => { if( tag === "blank") count++  })
+
+        if (count > 2) {
+            db.inventory.updateOne({ _id: _id }, { $mul: { "qty": 2.5 } })
+        }
+    }
+)
+
+// 3.
+updateFirstInInventory({
+    level: { $exists: true }
+},{
+    $unset: { level: "" }
+});
+
+
+
+
+// Switch
+// 1.
