@@ -18,7 +18,7 @@ const Login = () => {
 
     if (authenticated) {
         return (
-            <Redirect to={"/"} />
+            <Redirect to="/" />
         )
     }
 

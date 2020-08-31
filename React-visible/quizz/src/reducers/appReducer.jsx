@@ -43,24 +43,25 @@ const initialState = {
 }
 
 const appReducer = (state = initialState, action) => {
+    let newUser;
     switch (action.type) {
         case USER_USERNAME_CHANGE: {
-            let newUser = { ...state.user };
+            newUser = { ...state.user };
             newUser[action.key] = action.value;
             return { ...state, user: newUser, usernameTaken: action.usernameTaken };
         }
         case USER_EMAIL_CHANGE: {
-            let newUser = { ...state.user };
+            newUser = { ...state.user };
             newUser[action.key] = action.value;
             return { ...state, user: newUser, emailTaken: action.emailTaken };
         }
         case USER_PASSWORD_CHANGE: {
-            let newUser = { ...state.user };
+            newUser = { ...state.user };
             newUser[action.key] = action.value;
             return { ...state, user: newUser, passwordsMatch: newUser.password === newUser.confirmPassword };
         }
         case USER_SIGNUP_VALID_SUBMIT: {
-            let newUser = { ...action.user };
+            newUser = { ...action.user };
             delete newUser['confirmPassword'];
             return { ...state, registered: true, users: state.users.concat(newUser), user: { ...initialUser} };
         }
@@ -71,7 +72,7 @@ const appReducer = (state = initialState, action) => {
             return { ...state, registered: false };
         }
         case USER_LOGIN_CHANGE: {
-            let newUser = { ...state.user };
+            newUser = { ...state.user };
             newUser[action.key] = action.value;
             return { ...state, invalidSubmit: false, user: newUser };
         }
@@ -97,13 +98,26 @@ const appReducer = (state = initialState, action) => {
             return { ...state, answer: action.value, invalidSubmit: false };
         }
         case QUESTION_VALID_SUBMIT: {
+            // Enregistre la réponse de l'utilisateur courant
             let newAnswer = [{ questionRef: action.key, answer: action.answer, right: action.right }];
-            let updatedUser = state.user;
+            let updatedUser = { ...state.user };
             updatedUser['answers'] = updatedUser['answers'].concat(newAnswer);
+
+            // Si l'utilisateur n'est pas à la dernière question du qcm
             if (state.step < state.qcmLength) {
+                // Enregistre le nouvel état de l'utilisateur courant
+                // Réinitialise la réponse courante
+                // Incrémente l'état du qcm de 1
+
                 return { ...state, user: updatedUser, answer: '', step: state.step + 1 };
-            } else {
-                let registeredUsers = state.users;
+            }
+            // Si l'utilisateur a répondu à la dernière question du qcm
+            else {
+                // Enregistre dans l'utilisateur courant que le qcm est terminé
+                // Met à jour l'utilisateur correspondant dans la liste des utilisateurs
+                // Réinitialise la réponse courante
+                
+                let registeredUsers = { ...state.users };
                 let userIndex = '';
                 registeredUsers.forEach( (registeredUser, index) => {
                     if (registeredUser['email'] === updatedUser['email']) {
@@ -112,6 +126,7 @@ const appReducer = (state = initialState, action) => {
                 });
                 updatedUser['qcmCompleted'] = true;
                 registeredUsers[userIndex] = updatedUser;
+
                 return { ...state, user: updatedUser, users: registeredUsers, answer: '' };
             }
         }

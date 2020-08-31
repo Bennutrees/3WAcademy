@@ -44,7 +44,7 @@ export const handleLoginSubmit = (user, users) => {
     users.forEach( registeredUser => {
         if (registeredUser['email'] === user['email']) {
             validCredentials = registeredUser['password'] === user['password'];
-            userBuffer = registeredUser;
+            userBuffer = { ...registeredUser };
         }
     });
     if (validCredentials) {

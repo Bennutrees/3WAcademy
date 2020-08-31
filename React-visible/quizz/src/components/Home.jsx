@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,9 +9,11 @@ const Home = () => {
     const dispatch = useDispatch();
     const { registered, authenticated, user } = useSelector((state) => state);
 
-    if (registered) {
-        dispatch(resetRegistration());
-    }
+    useEffect(() => {
+        if (registered) {
+            dispatch(resetRegistration());
+        }
+    }, [registered]);
 
     return (
         <div className="container text-center my-5">
